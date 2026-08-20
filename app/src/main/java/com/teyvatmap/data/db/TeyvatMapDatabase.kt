@@ -17,6 +17,7 @@ import com.teyvatmap.data.db.MapEntities.*
     version = 1,
     exportSchema = false
 )
+@TypeConverters(Converters::class)
 abstract class TeyvatMapDatabase : RoomDatabase() {
 
     abstract fun labelDao(): LabelDao
