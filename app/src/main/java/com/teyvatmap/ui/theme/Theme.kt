@@ -30,7 +30,6 @@ private val DarkColorScheme = darkColorScheme(
     inverseSurface = Color.White,
     inverseOnSurface = Color.Black,
     inversePrimary = Teal700,
-    shadow = Color.Black,
     scrim = Color.Black.copy(alpha = 0.8f),
     surfaceTint = Teal400,
 )
