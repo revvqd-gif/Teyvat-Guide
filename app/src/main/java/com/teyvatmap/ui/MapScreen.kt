@@ -82,6 +82,7 @@ import com.teyvatmap.R
 import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
+import io.coil.compose.AsyncImage
 import io.coil.compose.rememberAsyncImagePainter
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.text.input.KeyboardOptions
@@ -320,31 +321,33 @@ fun Sidebar(
                 ) {
                     verticalScroll(rememberScrollState()) {
                         Column {
-                            labelTree?.fold(
-                                onSuccess = { tree ->
-                                    tree.forEach { category ->
-                                        CategoryItem(
-                                            category = category,
-                                            selectedIds = selectedLabelIds,
-                                            onToggle = { id, checked ->
-                                                viewModel.toggleLabel(id)
-                                            },
-                                            getChildLabels = { viewModel.getChildLabels(it) }
+                            labelTree?.let { uiState ->
+                                uiState.fold(
+                                    onSuccess = { tree ->
+                                        tree.forEach { category ->
+                                            CategoryItem(
+                                                category = category,
+                                                selectedIds = selectedLabelIds,
+                                                onToggle = { id, checked ->
+                                                    viewModel.toggleLabel(id)
+                                                },
+                                                getChildLabels = { viewModel.getChildLabels(it) }
+                                            )
+                                        }
+                                    },
+                                    onFailure = { _, _ ->
+                                        Text("Failed to load categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                                    },
+                                    onLoading = {
+                                        CircularProgressIndicator(
+                                            modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp)
                                         )
+                                    },
+                                    onIdle = {
+                                        Text("No categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
                                     }
-                                },
-                                onFailure = { _, _ ->
-                                    Text("Failed to load categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
-                                },
-                                onLoading = {
-                                    CircularProgressIndicator(
-                                        modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp)
-                                    )
-                                },
-                                onIdle = {
-                                    Text("No categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                }
-                            )
+                                )
+                            }
                         }
                     }
                 }
