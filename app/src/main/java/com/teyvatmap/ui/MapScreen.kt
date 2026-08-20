@@ -75,6 +75,8 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.verticalScroll
+import androidx.compose.foundation.rememberScrollState
 import com.teyvatmap.R
 import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
