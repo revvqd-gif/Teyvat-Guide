@@ -26,40 +26,40 @@ class MapViewModel(
 
     // UI State using sealed class
     private val _mapInfo = MutableStateFlow<UiState<com.teyvatmap.data.MapInfoDetail>>(UiState.Idle)
-    val mapInfo: Flow<UiState<com.teyvatmap.data.MapInfoDetail>> = _mapInfo
+    val mapInfo = _mapInfo
 
     private val _labelTree = MutableStateFlow<UiState<List<com.teyvatmap.data.LabelNode>>>(UiState.Idle)
-    val labelTree: Flow<UiState<List<com.teyvatmap.data.LabelNode>>> = _labelTree
+    val labelTree = _labelTree
 
     private val _areas = MutableStateFlow<UiState<List<com.teyvatmap.data.MapArea>>>(UiState.Idle)
-    val areas: Flow<UiState<List<com.teyvatmap.data.MapArea>>> = _areas
+    val areas = _areas
 
     private val _points = MutableStateFlow<UiState<List<com.teyvatmap.data.MapPoint>>>(UiState.Idle)
-    val points: Flow<UiState<List<com.teyvatmap.data.MapPoint>>> = _points
+    val points = _points
 
     private val _markedPoints = MutableStateFlow<UiState<Set<Int>>>(UiState.Idle)
-    val markedPoints: Flow<UiState<Set<Int>>> = _markedPoints
+    val markedPoints = _markedPoints
 
     private val _selectedLabelIds = MutableStateFlow<Set<Int>>(emptySet())
-    val selectedLabelIds: Flow<Set<Int>> = _selectedLabelIds.distinctUntilChanged()
+    val selectedLabelIds = _selectedLabelIds
 
     private val _isLoading = MutableStateFlow<Boolean>(false)
-    val isLoading: Flow<Boolean> = _isLoading.distinctUntilChanged()
+    val isLoading = _isLoading
 
     private val _errorMessage = MutableStateFlow<String?>(null)
-    val errorMessage: Flow<String?> = _errorMessage.distinctUntilChanged()
+    val errorMessage = _errorMessage
 
     private val _cookieStatus = MutableStateFlow<String>("Checking cookie...")
-    val cookieStatus: Flow<String> = _cookieStatus.distinctUntilChanged()
+    val cookieStatus = _cookieStatus
 
     private val _hasValidCookie = MutableStateFlow<Boolean>(false)
-    val hasValidCookie: Flow<Boolean> = _hasValidCookie.distinctUntilChanged()
+    val hasValidCookie = _hasValidCookie
 
     private val _showZones = MutableStateFlow<Boolean>(true)
-    val showZones: Flow<Boolean> = _showZones.distinctUntilChanged()
+    val showZones = _showZones
 
     private val _onlyUncollected = MutableStateFlow<Boolean>(true)
-    val onlyUncollected: Flow<Boolean> = _onlyUncollected.distinctUntilChanged()
+    val onlyUncollected = _onlyUncollected
 
     init {
         loadInitialData()
