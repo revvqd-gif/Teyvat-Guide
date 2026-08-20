@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "com.teyvatmap.app-debug-71:/xml_data_extraction_rules.xml.flat",
+        "source": "com.teyvatmap.app-main-73:/xml/data_extraction_rules.xml"
+    },
+    {
+        "merged": "com.teyvatmap.app-debug-71:/xml_backup_rules.xml.flat",
+        "source": "com.teyvatmap.app-main-73:/xml/backup_rules.xml"
+    }
+]

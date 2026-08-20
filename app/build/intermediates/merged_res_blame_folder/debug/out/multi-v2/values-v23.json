@@ -1,0 +1,19 @@
+{
+    "logs": [
+        {
+            "outputFile": "com.teyvatmap.app-mergeDebugResources-69:/values-v23/values-v23.xml",
+            "map": [
+                {
+                    "source": "/data/data/com.termux/files/home/.gradle/caches/transforms-4/80e751570b6183308237d141b4ef9915/transformed/work-runtime-2.3.4/res/values-v23/values-v23.xml",
+                    "from": {
+                        "startLines": "2,3",
+                        "startColumns": "4,4",
+                        "startOffsets": "55,121",
+                        "endColumns": "65,62",
+                        "endOffsets": "116,179"
+                    }
+                }
+            ]
+        }
+    ]
+}

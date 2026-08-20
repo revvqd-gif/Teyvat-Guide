@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="teal_700">#006D77</color>
+    <color name="teal_600">#00818E</color>
+    <color name="teal_500">#0096A3</color>
+    <color name="teal_400">#4FC3F7</color>
+    <color name="teal_300">#80D8FF</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="dark_bg">#0F1419</color>
+    <color name="panel_bg">#1A212B</color>
+    <color name="panel_bg2">#222B37</color>
+    <color name="muted_text">#8B98A5</color>
+    <color name="accent">#4FC3F7</color>
+    <color name="green">#66BB6A</color>
+    <color name="red">#EF5350</color>
+    <color name="border">#2E3945</color>
+    <color name="ic_launcher_background">#0F1419</color>
+</resources>
