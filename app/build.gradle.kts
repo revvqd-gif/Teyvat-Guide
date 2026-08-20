@@ -50,8 +50,8 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.window:window:1.3.0")
 
-    // Compose Material3 - BOM 2024.01.01 for Kotlin 1.9.20 + Compiler 1.5.4
-    val composeBom = platform("androidx.compose:compose-bom:2024.01.01")
+    // Compose Material3 - BOM 2023.12.01 for Kotlin 1.9.20 + Compiler 1.5.4
+    val composeBom = platform("androidx.compose:compose-bom:2023.12.01")
     implementation(composeBom)
     implementation("androidx.compose.material3:material3")
     implementation("androidx.compose.ui:ui-graphics")
