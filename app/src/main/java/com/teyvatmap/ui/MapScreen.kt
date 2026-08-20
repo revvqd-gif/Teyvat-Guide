@@ -82,10 +82,11 @@ import com.teyvatmap.R
 import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
-import io.coil.compose.AsyncImage
 import io.coil.compose.rememberAsyncImagePainter
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.text.input.KeyboardOptions
+import androidx.compose.ui.unit.IntSize
+import androidx.compose.ui.unit.Constraints
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
