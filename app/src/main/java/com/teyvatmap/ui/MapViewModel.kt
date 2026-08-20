@@ -1,10 +1,16 @@
-package com.teyvatmap.data
+package com.teyvatmap.ui
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.teyvatmap.data.CookieManager
+import com.teyvatmap.data.MapRepository
+import com.teyvatmap.data.CookieParser
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.launch
 
 sealed class UiState<out T> {
     data class Success<out T>(val data: T) : UiState<T>()
@@ -16,20 +22,20 @@ sealed class UiState<out T> {
 class MapViewModel(
     private val repository: MapRepository,
     private val cookieManager: CookieManager
-) : androidx.lifecycle.ViewModel() {
+) : ViewModel() {
 
     // UI State using sealed class
-    private val _mapInfo = MutableStateFlow<UiState<MapInfoDetail>>(UiState.Idle)
-    val mapInfo: Flow<UiState<MapInfoDetail>> = _mapInfo
+    private val _mapInfo = MutableStateFlow<UiState<com.teyvatmap.data.MapInfoDetail>>(UiState.Idle)
+    val mapInfo: Flow<UiState<com.teyvatmap.data.MapInfoDetail>> = _mapInfo
 
-    private val _labelTree = MutableStateFlow<UiState<List<LabelNode>>>(UiState.Idle)
-    val labelTree: Flow<UiState<List<LabelNode>>> = _labelTree
+    private val _labelTree = MutableStateFlow<UiState<List<com.teyvatmap.data.LabelNode>>>(UiState.Idle)
+    val labelTree: Flow<UiState<List<com.teyvatmap.data.LabelNode>>> = _labelTree
 
-    private val _areas = MutableStateFlow<UiState<List<MapArea>>>(UiState.Idle)
-    val areas: Flow<UiState<List<MapArea>>> = _areas
+    private val _areas = MutableStateFlow<UiState<List<com.teyvatmap.data.MapArea>>>(UiState.Idle)
+    val areas: Flow<UiState<List<com.teyvatmap.data.MapArea>>> = _areas
 
-    private val _points = MutableStateFlow<UiState<List<MapPoint>>>(UiState.Idle)
-    val points: Flow<UiState<List<MapPoint>>> = _points
+    private val _points = MutableStateFlow<UiState<List<com.teyvatmap.data.MapPoint>>>(UiState.Idle)
+    val points: Flow<UiState<List<com.teyvatmap.data.MapPoint>>> = _points
 
     private val _markedPoints = MutableStateFlow<UiState<Set<Int>>>(UiState.Idle)
     val markedPoints: Flow<UiState<Set<Int>>> = _markedPoints
@@ -60,7 +66,7 @@ class MapViewModel(
     }
 
     fun loadInitialData() {
-        androidx.lifecycle.viewModelScope.launch {
+        viewModelScope.launch {
             loadStaticData()
         }
     }
@@ -75,18 +81,18 @@ class MapViewModel(
             val labelsResult = repository.getLabelTree()
             val areasResult = repository.getAreas()
 
-            _mapInfo.value = mapInfoResult.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message, it) }
-            )
-            _labelTree.value = labelsResult.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message, it) }
-            )
-            _areas.value = areasResult.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message, it) }
-            )
+            _mapInfo.value = when (mapInfoResult) {
+                is Result.Success -> UiState.Success(mapInfoResult.value)
+                is Result.Failure -> UiState.Error(mapInfoResult.exceptionOrNull()?.message ?: "Unknown error", mapInfoResult.exceptionOrNull())
+            }
+            _labelTree.value = when (labelsResult) {
+                is Result.Success -> UiState.Success(labelsResult.value)
+                is Result.Failure -> UiState.Error(labelsResult.exceptionOrNull()?.message ?: "Unknown error", labelsResult.exceptionOrNull())
+            }
+            _areas.value = when (areasResult) {
+                is Result.Success -> UiState.Success(areasResult.value)
+                is Result.Failure -> UiState.Error(areasResult.exceptionOrNull()?.message ?: "Unknown error", areasResult.exceptionOrNull())
+            }
 
             // Set default selected labels (all top-level categories)
             val labels = labelsResult.getOrNull() ?: emptyList()
@@ -104,7 +110,7 @@ class MapViewModel(
     }
 
     fun checkCookie() {
-        androidx.lifecycle.viewModelScope.launch {
+        viewModelScope.launch {
             val cookie = cookieManager.getCookieSync()
             val hasCookie = cookie.isNotBlank() && CookieParser.hasValidTokens(cookie)
 
@@ -118,7 +124,7 @@ class MapViewModel(
     }
 
     fun saveCookie(rawCookie: String) {
-        androidx.lifecycle.viewModelScope.launch {
+        viewModelScope.launch {
             val parsed = CookieParser.parseCookie(rawCookie)
             if (parsed.isBlank()) {
                 _errorMessage.value = "Invalid cookie format"
@@ -137,7 +143,7 @@ class MapViewModel(
     }
 
     fun clearCookie() {
-        androidx.lifecycle.viewModelScope.launch {
+        viewModelScope.launch {
             cookieManager.clearCookie()
             _hasValidCookie.value = false
             _cookieStatus.value = "No cookie"
@@ -146,15 +152,15 @@ class MapViewModel(
     }
 
     fun refreshMarks() {
-        androidx.lifecycle.viewModelScope.launch {
+        viewModelScope.launch {
             _markedPoints.value = UiState.Loading
             val result = repository.getMarkedPoints()
-            _markedPoints.value = result.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message, it) }
-            )
+            _markedPoints.value = when (result) {
+                is Result.Success -> UiState.Success(result.value)
+                is Result.Failure -> UiState.Error(result.exceptionOrNull()?.message ?: "Unknown error", result.exceptionOrNull())
+            }
             if (result is Result.Success) {
-                _cookieStatus.value = "Synced: ${result.getOrNull()?.size ?: 0} marks"
+                _cookieStatus.value = "Synced: ${result.value.size} marks"
                 refreshPoints()
             } else {
                 _cookieStatus.value = "Sync failed"
@@ -171,13 +177,13 @@ class MapViewModel(
         _isLoading.value = true
         _errorMessage.value = null
 
-        androidx.lifecycle.viewModelScope.launch {
+        viewModelScope.launch {
             val labelIds = _selectedLabelIds.value.toList()
             val result = repository.getPoints(labelIds)
-            _points.value = result.fold(
-                onSuccess = { UiState.Success(it) },
-                onFailure = { UiState.Error(it.message, it) }
-            )
+            _points.value = when (result) {
+                is Result.Success -> UiState.Success(result.value)
+                is Result.Failure -> UiState.Error(result.exceptionOrNull()?.message ?: "Unknown error", result.exceptionOrNull())
+            }
             _isLoading.value = false
 
             if (result is Result.Failure) {
@@ -210,42 +216,21 @@ class MapViewModel(
     }
 
     fun getLabelCount(labelId: Int): Int {
-        return points.value?.fold(
-            onSuccess = { it.count { it.labelId == labelId } },
-            onFailure = { 0 },
-            onLoading = { 0 },
-            onIdle = { 0 }
-        ) ?: 0
+        return points.value?.let {
+            when (it) {
+                is UiState.Success -> it.data.count { it.labelId == labelId }
+                else -> 0
+            }
+        } ?: 0
     }
 
     // Get child labels for a category
-    fun getChildLabels(categoryId: Int): List<LabelNode> {
-        return labelTree.value?.fold(
-            onSuccess = { it.firstOrNull { it.id == categoryId }?.children ?: emptyList() },
-            onFailure = { emptyList() },
-            onLoading = { emptyList() },
-            onIdle = { emptyList() }
-        ) ?: emptyList()
+    fun getChildLabels(categoryId: Int): List<com.teyvatmap.data.LabelNode> {
+        return labelTree.value?.let {
+            when (it) {
+                is UiState.Success -> it.data.firstOrNull { it.id == categoryId }?.children ?: emptyList()
+                else -> emptyList()
+            }
+        } ?: emptyList()
     }
-}
-
-// Extension functions for Result
-inline fun <T> Result<T>.fold(
-    onSuccess: (T) -> R,
-    onFailure: (Throwable) -> R
-): R = when (this) {
-    is Result.Success -> onSuccess(value)
-    is Result.Failure -> onFailure(exception)
-}
-
-inline fun <T> UiState<T>.fold(
-    onSuccess: (T) -> R,
-    onFailure: (String, Throwable?) -> R,
-    onLoading: () -> R,
-    onIdle: () -> R
-): R = when (this) {
-    is UiState.Success -> onSuccess(data)
-    is UiState.Error -> onFailure(message, throwable)
-    UiState.Loading -> onLoading()
-    UiState.Idle -> onIdle()
 }
