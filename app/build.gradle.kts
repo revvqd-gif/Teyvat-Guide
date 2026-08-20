@@ -50,15 +50,17 @@ dependencies {
     implementation("androidx.activity:activity-compose:1.8.2")
     implementation("androidx.window:window:1.3.0")
 
-    // Compose Material3 - BOM 2023.12.01 for Kotlin 1.9.20 + Compiler 1.5.4
-    val composeBom = platform("androidx.compose:compose-bom:2023.12.01")
-    implementation(composeBom)
-    implementation("androidx.compose.material3:material3")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.foundation:foundation")
-    // Material3 XML themes (for themes.xml parent)
-    implementation("com.google.android.material:material:1.12.0")
+    // Compose Material3 - explicit versions for Kotlin 1.9.20 + Compose Compiler 1.5.4
+    implementation("androidx.compose.material3:material3:1.2.0")
+    implementation("androidx.compose.ui:ui-graphics:1.5.4")
+    implementation("androidx.compose.ui:ui-tooling-preview:1.5.4")
+    implementation("androidx.compose.foundation:foundation:1.5.4")
+    implementation("androidx.compose.material:material-icons-extended:1.5.4")
+    implementation("androidx.compose.runtime:runtime:1.5.4")
+    implementation("androidx.compose.ui:ui:1.5.4")
+    implementation("androidx.compose.ui:ui-text:1.5.4")
+    implementation("androidx.compose.ui:ui-unit:1.5.4")
+    implementation("androidx.compose.ui:ui-graphics:1.5.4")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
