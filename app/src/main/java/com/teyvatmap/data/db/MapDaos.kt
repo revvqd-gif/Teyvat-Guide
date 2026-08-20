@@ -57,7 +57,7 @@ interface MarkedPointDao {
     suspend fun insertAll(marks: List<MarkedPointEntity>)
 
     @Query("SELECT point_id FROM marked_points")
-    fun getAllMarkedPointIds(): Flow<Set<Int>>
+    fun getAllMarkedPointIds(): Flow<List<Int>>
 
     @Query("DELETE FROM marked_points")
     suspend fun clearAll()

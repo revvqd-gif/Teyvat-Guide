@@ -202,6 +202,7 @@ class MapRepositoryImpl(
 
     override fun observeMarkedPoints(): Flow<Set<Int>> {
         return db.markedPointDao().getAllMarkedPointIds()
+            .map { it.toSet() }
             .distinctUntilChanged()
     }
 
