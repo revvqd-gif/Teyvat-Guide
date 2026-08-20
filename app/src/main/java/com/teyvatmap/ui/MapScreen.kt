@@ -325,7 +325,7 @@ fun Sidebar(
                 ) {
                     labelTree?.let { uiState ->
                         uiState.fold(
-                            onSuccess = { tree ->
+                            onSuccess = { tree: List<LabelNode> ->
                                 items<LabelNode>(tree) { category ->
                                     CategoryItem(
                                         category = category,
@@ -493,7 +493,7 @@ fun CategoryItem(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     category.icon?.let { iconUrl ->
-                        AsyncImage(
+                        io.coil.compose.AsyncImage(
                             model = iconUrl,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
@@ -534,7 +534,7 @@ fun CategoryItem(
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 child.icon?.let { iconUrl ->
-                                    AsyncImage(
+                                    io.coil.compose.AsyncImage(
                                         model = iconUrl,
                                         contentDescription = null,
                                         modifier = Modifier.size(20.dp)
@@ -588,7 +588,7 @@ fun CookieDialog(
                     modifier = Modifier.fillMaxWidth().height(120.dp),
                     label = { Text("Cookie") },
                     singleLine = false,
-                    keyboardOptions = KeyboardOptions.Default,
+                    keyboardOptions = androidx.compose.ui.text.input.KeyboardOptions.Default,
                     colors = TextFieldDefaults.textFieldColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                     )
