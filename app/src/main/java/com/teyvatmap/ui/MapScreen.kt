@@ -72,7 +72,6 @@ import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -84,7 +83,7 @@ import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
 import io.coil.compose.rememberAsyncImagePainter
-import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.material3.ExperimentalMaterial3Api
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
