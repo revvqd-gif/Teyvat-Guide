@@ -81,18 +81,18 @@ class MapViewModel(
             val labelsResult = repository.getLabelTree()
             val areasResult = repository.getAreas()
 
-            _mapInfo.value = when (mapInfoResult) {
-                is Result.Success -> UiState.Success(mapInfoResult.value)
-                is Result.Failure -> UiState.Error(mapInfoResult.exceptionOrNull()?.message ?: "Unknown error", mapInfoResult.exceptionOrNull())
-            }
-            _labelTree.value = when (labelsResult) {
-                is Result.Success -> UiState.Success(labelsResult.value)
-                is Result.Failure -> UiState.Error(labelsResult.exceptionOrNull()?.message ?: "Unknown error", labelsResult.exceptionOrNull())
-            }
-            _areas.value = when (areasResult) {
-                is Result.Success -> UiState.Success(areasResult.value)
-                is Result.Failure -> UiState.Error(areasResult.exceptionOrNull()?.message ?: "Unknown error", areasResult.exceptionOrNull())
-            }
+            _mapInfo.value = mapInfoResult.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { e -> UiState.Error(e.message ?: "Unknown error", e) }
+            )
+            _labelTree.value = labelsResult.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { e -> UiState.Error(e.message ?: "Unknown error", e) }
+            )
+            _areas.value = areasResult.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { e -> UiState.Error(e.message ?: "Unknown error", e) }
+            )
 
             // Set default selected labels (all top-level categories)
             val labels = labelsResult.getOrNull() ?: emptyList()
@@ -155,12 +155,12 @@ class MapViewModel(
         viewModelScope.launch {
             _markedPoints.value = UiState.Loading
             val result = repository.getMarkedPoints()
-            _markedPoints.value = when (result) {
-                is Result.Success -> UiState.Success(result.value)
-                is Result.Failure -> UiState.Error(result.exceptionOrNull()?.message ?: "Unknown error", result.exceptionOrNull())
-            }
-            if (result is Result.Success) {
-                _cookieStatus.value = "Synced: ${result.value.size} marks"
+            _markedPoints.value = result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { e -> UiState.Error(e.message ?: "Unknown error", e) }
+            )
+            if (result.isSuccess) {
+                _cookieStatus.value = "Synced: ${result.getOrNull()?.size ?: 0} marks"
                 refreshPoints()
             } else {
                 _cookieStatus.value = "Sync failed"
@@ -180,13 +180,13 @@ class MapViewModel(
         viewModelScope.launch {
             val labelIds = _selectedLabelIds.value.toList()
             val result = repository.getPoints(labelIds)
-            _points.value = when (result) {
-                is Result.Success -> UiState.Success(result.value)
-                is Result.Failure -> UiState.Error(result.exceptionOrNull()?.message ?: "Unknown error", result.exceptionOrNull())
-            }
+            _points.value = result.fold(
+                onSuccess = { UiState.Success(it) },
+                onFailure = { e -> UiState.Error(e.message ?: "Unknown error", e) }
+            )
             _isLoading.value = false
 
-            if (result is Result.Failure) {
+            if (result.isFailure) {
                 _errorMessage.value = result.exceptionOrNull()?.message ?: "Failed to load points"
             }
         }
