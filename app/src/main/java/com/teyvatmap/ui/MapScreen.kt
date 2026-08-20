@@ -83,13 +83,13 @@ import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
 import io.coil.compose.AsyncImage
-import io.coil.compose.rememberAsyncImagePainter
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.layout.height
 import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -326,7 +326,7 @@ fun Sidebar(
                     labelTree?.let { uiState ->
                         uiState.fold(
                             onSuccess = { tree ->
-                                items(tree) { category ->
+                                items<LabelNode>(tree) { category ->
                                     CategoryItem(
                                         category = category,
                                         selectedIds = selectedLabelIds,
