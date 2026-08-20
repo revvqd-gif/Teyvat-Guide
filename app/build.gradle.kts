@@ -61,6 +61,8 @@ dependencies {
     implementation("androidx.compose.ui:ui-text:1.5.4")
     implementation("androidx.compose.ui:ui-unit:1.5.4")
     implementation("androidx.compose.ui:ui-graphics:1.5.4")
+    // Material Components for XML theme (Theme.MaterialComponents.DayNight.NoActionBar)
+    implementation("com.google.android.material:material:1.12.0")
 
     // Navigation
     implementation("androidx.navigation:navigation-compose:2.7.6")
