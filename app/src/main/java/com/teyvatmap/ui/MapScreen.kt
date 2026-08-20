@@ -76,7 +76,7 @@ import com.teyvatmap.R
 import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
-import io.coil-kt.compose.rememberAsyncImagePainter
+import io.coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun MapScreen(
