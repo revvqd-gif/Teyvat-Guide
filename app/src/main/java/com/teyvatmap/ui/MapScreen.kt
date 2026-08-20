@@ -316,7 +316,7 @@ fun Sidebar(
                 ) {
                     verticalScroll(rememberScrollState()) {
                         Column {
-                            labelTree.value?.fold(
+                            labelTree?.fold(
                                 onSuccess = { tree ->
                                     tree.forEach { category ->
                                         CategoryItem(
