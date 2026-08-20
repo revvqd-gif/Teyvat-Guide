@@ -82,6 +82,7 @@ import com.teyvatmap.R
 import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
+import androidx.compose.ui.layout.height
 import io.coil.compose.rememberAsyncImagePainter
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.ui.text.input.KeyboardOptions
@@ -314,42 +315,44 @@ fun Sidebar(
 
                 androidx.compose.foundation.layout.Spacer(modifier = Modifier.padding(top = 8.dp))
 
-                Column(
+                LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .weight(1f),
                     verticalArrangement = Arrangement.Top
                 ) {
-                    verticalScroll(rememberScrollState()) {
-                        Column {
-                            labelTree?.let { uiState ->
-                                uiState.fold(
-                                    onSuccess = { tree ->
-                                        tree.forEach { category ->
-                                            CategoryItem(
-                                                category = category,
-                                                selectedIds = selectedLabelIds,
-                                                onToggle = { id, checked ->
-                                                    viewModel.toggleLabel(id)
-                                                },
-                                                getChildLabels = { viewModel.getChildLabels(it) }
-                                            )
-                                        }
-                                    },
-                                    onFailure = { _, _ ->
-                                        Text("Failed to load categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
-                                    },
-                                    onLoading = {
-                                        CircularProgressIndicator(
-                                            modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp)
-                                        )
-                                    },
-                                    onIdle = {
-                                        Text("No categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                                    }
-                                )
+                    labelTree?.let { uiState ->
+                        uiState.fold(
+                            onSuccess = { tree ->
+                                items(tree) { category ->
+                                    CategoryItem(
+                                        category = category,
+                                        selectedIds = selectedLabelIds,
+                                        onToggle = { id, checked ->
+                                            viewModel.toggleLabel(id)
+                                        },
+                                        getChildLabels = { viewModel.getChildLabels(it) }
+                                    )
+                                }
+                            },
+                            onFailure = { _, _ ->
+                                item {
+                                    Text("Failed to load categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.error)
+                                }
+                            },
+                            onLoading = {
+                                item {
+                                    CircularProgressIndicator(
+                                        modifier = Modifier.align(Alignment.CenterHorizontally).padding(16.dp)
+                                    )
+                                }
+                            },
+                            onIdle = {
+                                item {
+                                    Text("No categories", style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                                }
                             }
-                        }
+                        )
                     }
                 }
             }
