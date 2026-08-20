@@ -1,7 +1,7 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("kotlin-kapt")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -15,13 +15,6 @@ android {
         versionCode = 1
         versionName = "1.0"
         vectorDrawables.useSupportLibrary = true
-
-        // Hilt
-        javaCompileOptions {
-            annotationProcessorOptions {
-                arguments += mapOf("dagger.fastInit" to "ENABLED")
-            }
-        }
     }
 
     buildTypes {
@@ -93,7 +86,7 @@ dependencies {
     // Room Database
     implementation("androidx.room:room-runtime:2.6.1")
     implementation("androidx.room:room-ktx:2.6.1")
-    kapt("androidx.room:room-compiler:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
 
     // DataStore for preferences
     implementation("androidx.datastore:datastore-preferences:1.1.1")
@@ -120,8 +113,4 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.6.1")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.1")
     debugImplementation("androidx.compose.ui:ui-tooling-preview:1.6.1")
-}
-
-kapt {
-    correctErrorTypes = true
 }
