@@ -84,6 +84,7 @@ import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
 import io.coil.compose.rememberAsyncImagePainter
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.ui.text.input.KeyboardOptions
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
