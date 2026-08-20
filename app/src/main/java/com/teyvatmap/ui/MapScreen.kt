@@ -30,6 +30,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -71,6 +72,7 @@ import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.IntSize
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -82,7 +84,9 @@ import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
 import io.coil.compose.rememberAsyncImagePainter
+import androidx.compose.ui.text.input.TextFieldValue
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MapScreen(
     viewModel: MapViewModel,
@@ -108,7 +112,7 @@ fun MapScreen(
     val onlyUncollected by viewModel.onlyUncollected.collectAsStateWithLifecycle()
 
     // Handle error display
-    androidx.compose.runtime.LaunchedEffect(viewModel.errorMessage.collectAsStateWithLifecycle().value) {
+    androidx.compose.runtime.LaunchedEffect(viewModel.errorMessage.collectAsStateWithLifecycle()) {
         val msg = viewModel.errorMessage.value
         if (msg != null) {
             errorMessage.value = msg
