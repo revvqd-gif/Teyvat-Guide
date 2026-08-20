@@ -24,8 +24,10 @@ import androidx.compose.foundation.layout.verticalScroll
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -72,6 +74,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.compose.foundation.Image
 import com.teyvatmap.R
 import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
@@ -255,7 +258,7 @@ fun Sidebar(
                 .width(320.dp)
                 .fillMaxHeight()
                 .background(MaterialTheme.colorScheme.surfaceContainerLow),
-            elevation = 16.dp,
+            elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
             shape = RoundedCornerShape(0.dp)
         ) {
             Column(
@@ -309,7 +312,7 @@ fun Sidebar(
                         .weight(1f),
                     verticalArrangement = Arrangement.Top
                 ) {
-                    androidx.compose.foundation.verticalScroll(rememberScrollState()) {
+                    verticalScroll(rememberScrollState()) {
                         Column {
                             labelTree.value?.fold(
                                 onSuccess = { tree ->
@@ -398,7 +401,7 @@ fun AccountSection(
                 Button(
                     onClick = onLogoutClick,
                     modifier = Modifier.weight(1f),
-                    colors = androidx.compose.material3.ButtonDefaults.buttonColors(
+                    colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.errorContainer
                     )
                 ) { Text("Logout") }
@@ -429,14 +432,14 @@ fun MapLayersSection(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            androidx.compose.material3.Checkbox(
+            Checkbox(
                 checked = showZones,
                 onCheckedChange = { onZoneToggle() },
                 modifier = Modifier.weight(1f).fillMaxWidth().wrapContentSize()
             )
             Text("Region Boundaries", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f).fillMaxWidth().wrapContentSize())
 
-            androidx.compose.material3.Checkbox(
+            Checkbox(
                 checked = onlyUncollected,
                 onCheckedChange = { onUncollectedToggle() },
                 modifier = Modifier.weight(1f).fillMaxWidth().wrapContentSize()
@@ -461,7 +464,7 @@ fun CategoryItem(
 
     Card(
         modifier = Modifier.fillMaxWidth(),
-        colors = androidx.compose.material3.CardDefaults.cardColors(
+        colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceContainer
         )
     ) {
@@ -475,8 +478,8 @@ fun CategoryItem(
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     category.icon?.let {
-                        androidx.compose.foundation.Image(
-                            painter = androidx.compose.foundation.rememberAsyncImagePainter(it),
+                        Image(
+                            painter = rememberAsyncImagePainter(it),
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )
@@ -497,7 +500,7 @@ fun CategoryItem(
                         modifier = Modifier.padding(start = 8.dp)
                     )
                 }
-                androidx.compose.material3.Checkbox(
+                Checkbox(
                     checked = isSelected,
                     onCheckedChange = { checked -> onToggle(category.id, checked) }
                 )
@@ -516,8 +519,8 @@ fun CategoryItem(
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
                                 child.icon?.let {
-                                    androidx.compose.foundation.Image(
-                                        painter = androidx.compose.foundation.rememberAsyncImagePainter(it),
+                                    Image(
+                                        painter = rememberAsyncImagePainter(it),
                                         contentDescription = null,
                                         modifier = Modifier.size(20.dp)
                                     )
@@ -525,7 +528,7 @@ fun CategoryItem(
                                 androidx.compose.foundation.layout.Spacer(modifier = Modifier.padding(start = 8.dp))
                                 Text(child.name, style = MaterialTheme.typography.bodyMedium)
                             }
-                            androidx.compose.material3.Checkbox(
+                            Checkbox(
                                 checked = childSelected,
                                 onCheckedChange = { checked -> onToggle(child.id, checked) }
                             )
@@ -555,11 +558,11 @@ fun CookieDialog(
                 if (hasCookie) {
                     Text("Current cookie is valid. You can update it or logout.", style = MaterialTheme.typography.bodyMedium)
                     androidx.compose.foundation.layout.Spacer(modifier = Modifier.padding(top = 12.dp))
-                    Button(onClick = onLogout, colors = androidx.compose.material3.ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
+                    Button(onClick = onLogout, colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.errorContainer)) {
                         Text("Logout")
                     }
                     androidx.compose.foundation.layout.Spacer(modifier = Modifier.padding(top = 12.dp))
-                    androidx.compose.ui.draw.Divider()
+                    Divider()
                     androidx.compose.foundation.layout.Spacer(modifier = Modifier.padding(top = 12.dp))
                 }
                 Text("Paste your HoYoLAB cookie here (Netscape format or JSON):", style = MaterialTheme.typography.bodyMedium)
@@ -570,8 +573,8 @@ fun CookieDialog(
                     modifier = Modifier.fillMaxWidth().height(120.dp),
                     label = { Text("Cookie") },
                     singleLine = false,
-                    keyboardOptions = androidx.compose.ui.text.input.KeyboardOptions.Default,
-                    colors = androidx.compose.material3.TextFieldDefaults.textFieldColors(
+                    keyboardOptions = KeyboardOptions.Default,
+                    colors = TextFieldDefaults.textFieldColors(
                         containerColor = MaterialTheme.colorScheme.surfaceContainerHigh
                     )
                 )
