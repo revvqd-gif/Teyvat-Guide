@@ -13,13 +13,14 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.teyvatmap.R
 import com.teyvatmap.data.MapRepository
 import com.teyvatmap.data.CookieManager
-import dagger.hilt.android.AndroidEntryPoint
+import com.teyvatmap.TeyvatMapApplication
 import kotlinx.coroutines.launch
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MapViewModel by viewModels()
+    private val viewModel: MapViewModel by viewModels {
+        TeyvatMapApplication.getInstance().repository
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
