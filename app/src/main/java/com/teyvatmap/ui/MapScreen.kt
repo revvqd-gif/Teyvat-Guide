@@ -82,12 +82,14 @@ import com.teyvatmap.R
 import com.teyvatmap.data.LabelNode
 import com.teyvatmap.map.TeyvatMapView
 import kotlinx.coroutines.launch
-import androidx.compose.ui.layout.height
+import io.coil.compose.AsyncImage
 import io.coil.compose.rememberAsyncImagePainter
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.ui.layout.height
 import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -490,9 +492,9 @@ fun CategoryItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    category.icon?.let {
-                        Image(
-                            painter = rememberAsyncImagePainter(it),
+                    category.icon?.let { iconUrl ->
+                        AsyncImage(
+                            model = iconUrl,
                             contentDescription = null,
                             modifier = Modifier.size(24.dp)
                         )
@@ -531,9 +533,9 @@ fun CategoryItem(
                             verticalAlignment = Alignment.CenterVertically
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                child.icon?.let {
-                                    Image(
-                                        painter = rememberAsyncImagePainter(it),
+                                child.icon?.let { iconUrl ->
+                                    AsyncImage(
+                                        model = iconUrl,
                                         contentDescription = null,
                                         modifier = Modifier.size(20.dp)
                                     )
