@@ -1,6 +1,8 @@
 package com.teyvatmap.data
 
 import com.google.common.util.concurrent.ListenableFuture
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -250,8 +252,6 @@ class MapRepositoryImpl(
     }
 
     private fun toPointEntity(point: MapPoint): com.teyvatmap.data.db.PointEntity {
-        import com.squareup.moshi.Moshi
-        import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val adapter = moshi.adapter<Map<String, String>>(Map::class.java)
         val extAttrsMapJson = point.extAttrsMap?.let { adapter.toJson(it) }
@@ -273,8 +273,6 @@ class MapRepositoryImpl(
     }
 
     private fun toMapPoint(entity: com.teyvatmap.data.db.PointEntity): MapPoint {
-        import com.squareup.moshi.Moshi
-        import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
         val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
         val adapter = moshi.adapter<Map<String, String>>(Map::class.java)
         val extAttrsMap = entity.extAttrsMap?.let { adapter.fromJson(it) }
